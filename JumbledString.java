@@ -11,6 +11,7 @@ public class JumbledString
 	private String word;
 	private char[] solved;
 	private char[] scrambled;
+	private char[] current;
 	private int size;
 	private Random randy;
 	
@@ -21,6 +22,7 @@ public class JumbledString
 		this.solved = new char[size];
 		this.scrambled = new char[size];
 		this.solved = word.toCharArray();
+		this.current = this.solved;
 		this.randy = new Random();
 		Scramble(size * size * size);
 	}
@@ -35,19 +37,23 @@ public class JumbledString
 	
 	private static void makeMove(Move move) 
 	{
-		if(move.isPossibleMove(move))
+		if(move.isPossibleMove())
 		{
-			
+			char first = current[move.getFirst()];
 		}
 		
 	}
 
-	private int randomMove() 
+	private Move randomMove() 
 	{
-		return (int)(Math.random() * size);
+		int first = (int)(Math.random() * size);
+		int second = (int)(Math.random() * size);
+		Move move = new Move(first, second, current);
+		
+		return (move);
 	}
 
-	public String printState()
+	public String toString()
 	{
 		return scrambled.toString();
 	}
