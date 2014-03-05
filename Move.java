@@ -13,7 +13,9 @@ public class Move
 		this.second = second;
 		this.state = state;
 		
-		if(this.first >= 0 && this.second <= this.state.length && this.first != this.second){
+		if((this.first >= 0) && (this.second >= 0) && (this.first < this.state.length) 
+				&& (this.second < this.state.length) && (this.first != this.second))
+		{
 			this.test = true;
 		}
 		else
