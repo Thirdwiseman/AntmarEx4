@@ -13,8 +13,11 @@ public class JumbledString
 	private char[] scrambled;
 	private char[] current;
 	private int size;
-	private Random randy;
 	
+	/**
+	 * Create a new Jumbled String given a string
+	 * @param word
+	 */
 	public JumbledString(String word) 
 	{
 		this.word = word;
@@ -23,25 +26,50 @@ public class JumbledString
 		this.scrambled = new char[size];
 		this.solved = word.toCharArray();
 		this.current = this.solved;
-		this.randy = new Random();
-		Scramble(size * size * size);
+		scramble(size * size * size);
 	}
 	
-	public void Scramble(int _moves) 
+	/**
+	 * Create a new JumbledString by copying the given JumbledString
+	 * @param state
+	 */
+	public JumbledString(JumbledString state)
+	{
+		this.word = state.getWord();
+		this.size = state.getSize();
+		this.solved = state.getSolved();
+		this.scrambled = state.getScrambled();
+		this.current = state.getCurrent();
+	}
+	
+	public void scramble(int _moves) 
 	{
 		for (int i = 0; i < _moves; i++) 
 		{
-			JumbledString.makeMove(randomMove());
+			boolean moveMade = false;
+			while(!moveMade)
+			{
+				moveMade = makeMove(randomMove());
+			}	
 		}
+		scrambled = current;
 	}
 	
-	private static void makeMove(Move move) 
+	private boolean makeMove(Move move) 
 	{
 		if(move.isPossibleMove())
 		{
 			char first = current[move.getFirst()];
+			char second = current[move.getSecond()];
+			
+			current[move.getFirst()] = second;
+			current[move.getSecond()] = first;
+			return true;
 		}
-		
+		else
+		{
+			return false;
+		}
 	}
 
 	private Move randomMove() 
@@ -52,10 +80,28 @@ public class JumbledString
 		
 		return (move);
 	}
+	
+	public boolean goalTest(char[] state)
+	{
+		if(state.equals(solved))
+		{
+			return true;
+		}
+		else
+		{
+			return false;
+		}
+	}
 
 	public String toString()
 	{
-		return scrambled.toString();
+		String letters = "";
+		for(int i = 0; i < size; i++)
+		{
+			letters = letters + current[i];
+		}
+		
+		return letters;
 	}
 	
 	public static void main(String[] args) 
@@ -67,6 +113,46 @@ public class JumbledString
 		word = input.nextLine();
 		
 		JumbledString solver = new JumbledString(word);
-		
+		System.out.println(solver.toString());
+	}
+	
+	public String getWord() {
+		return word;
+	}
+
+	public void setWord(String word) {
+		this.word = word;
+	}
+
+	public char[] getSolved() {
+		return solved;
+	}
+
+	public void setSolved(char[] solved) {
+		this.solved = solved;
+	}
+
+	public char[] getScrambled() {
+		return scrambled;
+	}
+
+	public void setScrambled(char[] scrambled) {
+		this.scrambled = scrambled;
+	}
+
+	public char[] getCurrent() {
+		return current;
+	}
+
+	public void setCurrent(char[] current) {
+		this.current = current;
+	}
+
+	public int getSize() {
+		return size;
+	}
+
+	public void setSize(int size) {
+		this.size = size;
 	}
 }
